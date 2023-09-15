@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Roughness Predictor</title>
+    <link rel="stylesheet" href="static/styles.css"> <!-- Add CSS for styling -->
+</head>
+<body>
+    <div class="header">
+        <h1>PAPER ROUGHNESS PREDICTOR</h1>
+    </div>
+    <div class="container">
+        <form id="predict-form">
+            <div class="row">
+                <label for="Dry Weight">Dry Weight:</label>
+                <input type="number" step="0.01" id="Dry Weight" name="Dry Weight" value="0.0" required min="0">
+            </div>
+
+            <div class="row">
+                <label for="Moisture 1">Moisture 1:</label>
+                <input type="number" step="0.01" id="Moisture 1" name="Moisture 1" value="0.0" required min="0">
+            </div>
+
+            <div class="row">
+                <label for="Moisture 2">Moisture 2:</label>
+                <input type="number" step="0.01" id="Moisture 2" name="Moisture 2" value="0.0" required min="0">
+            </div>
+
+            <div class="row">
+                <label for="Basis Weight">Basis Weight:</label>
+                <input type="number" step="0.01" id="Basis Weight" name="Basis Weight" value="0.0" required min="0">
+            </div> 
+            
+            <div class="row">
+                <label for="Coat Weight 1">Coat Weight 1:</label>
+                <input type="number" step="0.01" id="Coat Weight 1" name="Coat Weight 1" value="0.0" required min="0">
+            </div>
+
+            <div class="row">
+                <label for="Coat Weight 2">Coat Weight 2:</label>
+                <input type="number" step="0.01" id="Coat Weight 2" name="Coat Weight 2" value="0.0" required min="0">
+            </div>
+
+            <div class="row">
+                <label for="Speed">Speed:</label>
+                <input type="number" step="0.01" id="Speed" name="Speed" value="0.0" required min="0">
+            </div>
+            <div class="row">
+                <label for="Dryer Control 1">Dryer Control 1:</label>
+                <input type="number" step="0.01" id="Dryer Control 1" name="Dryer Control 1" value="0.0" required min="0">
+            </div>
+            <div class="row">
+                <label for="Dryer Control 2">Dryer Control 2:</label>
+                <input type="number" step="0.01" id="Dryer Control 2" name="Dryer Control 2" value="0.0" required min="0">
+            </div>
+            <button type="button" id="calculate-button">Calculate</button> <!-- Changed type to "button" -->
+        </form>
+        
+        <div id="result-container">
+            <!-- Result will be displayed here -->
+        </div>
+
+        <p class="error" id="error-message"></p> <!-- Error message container -->
+        
+        <button type="button" id="back-button" style="display: none;">Clear</button> <!-- Back button initially hidden -->
+    </div>
+
+    <script>
+    // JavaScript to handle form submission using AJAX
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("predict-form");
+        const calculateButton = document.getElementById("calculate-button");
+        const resultContainer = document.getElementById("result-container");
+        const errorMessage = document.getElementById("error-message");
+        const backButton = document.getElementById("back-button");
+
+        calculateButton.addEventListener("click", function () {
+            // Check if any input values are negative
+            let hasNegativeValue = false;
+            const inputElements = form.querySelectorAll('input[type="number"]');
+            inputElements.forEach(function (input) {
+                if (parseFloat(input.value) < 0) {
+                    hasNegativeValue = true;
+                    return;
+                }
+            });
+
+            if (hasNegativeValue) {
+                errorMessage.textContent = "Input values cannot be negative.";
+                resultContainer.innerHTML = ""; // Clear result container
+                backButton.style.display = "none"; // Hide back button
+                return;
+            }
+
+            // Serialize the form data
+            const formData = new FormData(form);
+
+            // Send a POST request to the server using fetch and display the result
+            fetch("/", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.error) {
+                        // Display error message
+                        errorMessage.textContent = data.error;
+                        resultContainer.innerHTML = ""; // Clear result container
+                        backButton.style.display = "none"; // Hide back button
+                    } else {
+                        // Display the result
+                        errorMessage.textContent = ""; // Clear error message
+                        resultContainer.innerHTML = `<p class="result">Paper Roughness: ${data.Results[0].toFixed(4)}</p>`;
+                        backButton.style.display = "block"; // Show back button
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        });
+
+        // Back button functionality
+        backButton.addEventListener("click", function () {
+            resultContainer.innerHTML = ""; // Clear result container
+            backButton.style.display = "none"; // Hide back button
+
+            // Reset all input values to zero
+            const inputElements = form.querySelectorAll('input[type="number"]');
+            inputElements.forEach(function (input) {
+                input.value = "0.0";
+            });
+
+            // Clear error message
+            errorMessage.textContent = "";
+        });
+    });
+</script>
+</body>
+</html>

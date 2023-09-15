@@ -1,0 +1,85 @@
+    /* Add custom CSS for layout */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #2a2a2a;  /* Dark grey background */
+        margin: 0;
+        padding: 0;
+        color: #e1e1e1;  /* Light grey text color for contrast */
+    }
+
+    .header {
+        background-color: #4a4a4a;  /* Lighter dark grey for the header */
+        color: #e1e1e1;  /* Light grey text color */
+        padding: 20px 0;
+        text-align: center;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #3a3a3a;  /* In-between grey for container background */
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);  /* A bit darker shadow for depth */
+    }
+
+    .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .row label {
+        flex: 1;
+        margin-right: 10px;
+        text-align: right;
+    }
+
+    .row input {
+        flex: 2;
+        width: 100%;
+        padding: 6px; /* Added padding for better input look */
+        border-radius: 3px; /* Slight border-radius */
+        border: 1px solid #515151; /* Lighter grey border */
+        background-color: #2a2a2a; /* Dark grey input background */
+        color: #e1e1e1; /* Light grey text color for contrast */
+    }
+
+    button {
+        background-color: #4a4a4a; /* Lighter dark grey for the button */
+        color: #e1e1e1; /* Light grey text color */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #3a3a3a; /* Darken on hover */
+    }
+
+    /* Style the header */
+    h1 {
+        font-size: 24px;
+        color: #d1d1d1;  /* A bit darker than the normal text for the title */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Style error messages */
+    .error {
+        color: #ff6969;  /* Slightly paler red for errors */
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    /* Style the result */
+    .result {
+        font-size: 18px;
+        color: #9ed8ff;  /* Light blue to highlight results */
+        margin-top: 20px;
+        text-align: center;
+    }
